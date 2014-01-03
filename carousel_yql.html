@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd"> 
+<html> 
+<head> 
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+    <title>Carousel: Circular Carousel</title> 
+ 
+<link rel="stylesheet" type="text/css" href="http://developer.yahoo.com/yui/build/fonts/fonts.css"> 
+    <link type="text/css" rel="stylesheet" href="http://developer.yahoo.com/yui/build/carousel/assets/skins/sam/carousel.css"> 
+ 
+    <script type="text/javascript" src="http://developer.yahoo.com/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
+    <script type="text/javascript" src="http://developer.yahoo.com/yui/build/element/element-min.js"></script> 
+    <script type="text/javascript" src="http://developer.yahoo.com/yui/build/carousel/carousel-min.js"></script>
+<script type="text/javascript" src="http://yui.yahooapis.com/3.2.0/build/yui/yui-min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/gallery-2010.10.20-19-33/build/gallery-carousel/assets/skins/sam/gallery-carousel.css"/>
+
+ 
+    <style type="text/css"> 
+    body {
+        margin:0;
+        padding:0;
+    }
+ 
+    #container {
+        margin: 0 auto;
+    }
+ 
+    .yui-carousel-element li {
+        height: 375px;
+    }
+	#carousel li img {
+		height:"375";
+		width:"500";
+	}
+	YUI 3-carousel {
+	  border: none !important;
+	}
+	.YUI 3-carousel-nav {
+	  background: none !important;
+	}
+	.carousel ol li {
+	  border: none !important;
+	}
+	.YUI 3-carousel-button {
+	  background: url("sprite_button.png") no-repeat scroll 0 0 transparent !important;
+	  height: 20px !important; width: 28px !important;
+	}
+	.YUI 3-carousel-nav-item {
+	  background: url("sprite_button.png") no-repeat scroll 0 0 transparent !important;
+	  background-position: -133px 0 !important;
+	}
+	.YUI 3-carousel-first-button {
+	  background-position: -90px 0 !important;
+	  margin-right: 35px !important;
+	}
+	.YUI 3-carousel-first-button-disabled {
+	  background-position: -60px 0 !important;
+	  margin-right: 35px !important;
+	}
+	.YUI 3-carousel-next-button {
+	  background-position: -30px 0 !important;
+	}
+	.YUI 3-carousel-button-disabled {
+	  background-position: 0 0 !important;
+	}
+	.YUI 3-carousel-nav-item-selected {
+	  background-position: -121px 0 !important;
+	}
+    </style> 
+ 
+</head> 
+<body class="yui3-skin-sam"> 
+    <h1>Circular Carousel Example</h1> 
+    <!-- The Carousel container --> 
+    <div id="container" class="carousel"> 
+        <ol id="image_ol"> 
+			<!--<li>
+				<img src="images/image1.jpg">
+            </li>
+			<li>
+				<img src="images/image2.jpg">
+            </li>
+			<li>
+				<img src="images/image3.jpg">
+            </li>
+			<li>
+				<img src="images/image4.jpg">
+            </li>
+			<li>
+				<img src="images/image5.jpg">
+            </li>-->
+        </ol> 
+    </div> 
+<button id="search_term"  onclick = "flickrSearch()">Search</button>
+    <!--<script> 
+
+    (function () {
+        var carousel;
+                
+        YAHOO.util.Event.onDOMReady(function (ev) {
+            var carousel    = new YAHOO.widget.Carousel("container", {
+                        isCircular: true, 
+						numVisible: 1
+                });
+ 
+            carousel.render(); 
+            carousel.show();  
+        });
+    })();
+ </script>-->
+ <script>
+
+	function flickrSearch(){
+
+	//var search = document.getElementById('search'),
+	  //  term = search.value;
+
+		YUI(
+		{gallery: 'gallery-2010.10.20-19-33'},{debug:true}
+).use("gallery-carousel", "gallery-carousel-anim", "yql" ,"substitute", function(Y) {
+				
+			//Y.on("available", function(e) {
+				Y.one('#container').set('innerHTML','');
+				
+				var container = Y.one('#container');
+			    	Y.one('#container').set('innerHTML','<ol id ="image_ol"></ol>');
+			    var res = Y.one('#image_ol'),
+			        url = '<li><img src="http://static.flickr.com/{server}/{id}_{secret}_t.jpg"></li>';
+
+			    var q = Y.YQL('select * from flickr.photos.recent where (api_key = "1895311ec0d2e23431a6407f3e8dffcc")', {
+			        //Tell JSONP to not cache this request so we get new images on each request
+			        allowCache: false,
+			        on: {
+			            success: function(r) {
+			                if (r.query && r.query.results) {
+			                    Y.each(r.query.results.photo, function(v) {
+			                        res.append(Y.Lang.sub(url, v));
+			                    });
+			                } // end of if 
+			            } // end of function
+			        } // end of on 
+			    }); // end of YQL statement
+			
+			
+			
+				/*var carousel = new Y.Carousel({ boundingBox: "#container", contentBox: "#container > ol",numVisible:1,isCircular: true});
+				carousel.plug(Y.CarouselAnimPlugin,{animation:{speed: 0.7}});
+				carousel.render();
+			}, "#container");*/
+			//}, "#container");
+			var carousel = new Y.Carousel({ boundingBox: "#container", contentBox: "#container > ol",numVisible:1,isCircular: true});
+			//carousel.plug(Y.CarouselAnimPlugin,{animation:{speed: 0.7}});
+			carousel.render();
+				
+	});
+	
+}
+	
+	
+    </script>
+</body> 
+</html> 
